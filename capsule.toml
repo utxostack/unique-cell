@@ -1,8 +1,6 @@
-# capsule version
 version = "0.10.1"
-# path of deployment config file
 deployment = "deployment.toml"
 
 [[contracts]]
-name = "unique-cell"
+name = "unique-type"
 template_type = "Rust"

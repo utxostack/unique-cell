@@ -1,6 +1,5 @@
 [workspace]
-members = ["contracts/unique-type"]
-exclude = ["tests"]
+members = ["contracts/unique-type", "tests"]
 
 [profile.release]
 overflow-checks = true
