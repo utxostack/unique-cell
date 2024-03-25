@@ -1,5 +1,5 @@
 [package]
-name = "unique-cell"
+name = "unique-type"
 version = "0.1.0"
 edition = "2021"
 

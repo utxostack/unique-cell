@@ -7,7 +7,7 @@ pub enum Error {
     ItemMissing,
     LengthNotEnough,
     Encoding,
-    InvalidUniqueArgsSize,
+    InvalidUniqueArgsSize = 5,
     InputUniqueCellMismatch,
 }
 

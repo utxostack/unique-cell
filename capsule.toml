@@ -1,8 +1,3 @@
-# [rust]
-# # path of rust contracts workspace directory,
-# # a `Cargo.toml` file is expected under the directory.
-# workspace_dir = "."
-
 # capsule version
 version = "0.10.1"
 # path of deployment config file

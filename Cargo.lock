@@ -58,7 +58,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "unique-cell"
+name = "unique-type"
 version = "0.1.0"
 dependencies = [
  "ckb-std",
