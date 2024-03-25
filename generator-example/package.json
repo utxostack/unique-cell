@@ -1,0 +1,19 @@
+{
+  "name": "generator-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "queue": "npx ts-node src/index.ts"
+  },
+  "dependencies": {
+    "@nervosnetwork/ckb-sdk-core": "^0.109.1",
+    "@nervosnetwork/ckb-sdk-rpc": "^0.109.1",
+    "@nervosnetwork/ckb-sdk-utils": "^0.109.1",
+    "@rgbpp-sdk/ckb": "0.0.0-snap-20240324134200"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.2",
+    "@types/node": "^20.11.28"
+  }
+}
