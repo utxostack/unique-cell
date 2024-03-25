@@ -1,0 +1,37 @@
+name: CI
+
+on: [pull_request]
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install Rust components
+        run: rustup component add rustfmt && rustup component add clippy
+      - name: Install cross
+        run: cargo install cross --git https://github.com/cross-rs/cross --rev=6982b6c
+           
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly-2023-04-20
+          override: true
+
+      - uses: docker-practice/actions-setup-docker@master
+        with:
+          docker_channel: nightly
+          docker_nightly_version: snapshot-20210202
+
+      - name: Install Capsule
+        env:
+          CAPSULE_VERSION: v0.10.1
+        run: |
+          sudo curl -OL https://github.com/nervosnetwork/capsule/releases/download/${CAPSULE_VERSION}/capsule_${CAPSULE_VERSION}_x86_64-linux.tar.gz && sudo tar xf capsule_${CAPSULE_VERSION}_x86_64-linux.tar.gz && echo `pwd`/capsule_${CAPSULE_VERSION}_x86_64-linux >> $GITHUB_PATH
+
+      - name: Build contracts
+        run: capsule build
+
+      - name: Test contracts
+        run: capsule test
