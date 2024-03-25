@@ -31,7 +31,7 @@ jobs:
           sudo curl -OL https://github.com/nervosnetwork/capsule/releases/download/${CAPSULE_VERSION}/capsule_${CAPSULE_VERSION}_x86_64-linux.tar.gz && sudo tar xf capsule_${CAPSULE_VERSION}_x86_64-linux.tar.gz && echo `pwd`/capsule_${CAPSULE_VERSION}_x86_64-linux >> $GITHUB_PATH
 
       - name: Build contracts
-        run: capsule build
+        run: make build
 
       - name: Test contracts
-        run: capsule test
+        run: make test

@@ -38,6 +38,8 @@ fn check_type_id() -> Result<(), Error> {
     Ok(())
 }
 
+// Ensure that unique cells cannot appear in transaction inputs, that is, unique cells cannot be
+// updated and destroyed
 fn check_inputs() -> Result<(), Error> {
     let unique_type = load_script()?;
     let is_unique_input_exist = QueryIter::new(load_cell_type, Source::Input)
