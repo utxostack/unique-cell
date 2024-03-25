@@ -1,4 +1,4 @@
-# unique-cell
+# Unique Cell
 
 Build contracts:
 
