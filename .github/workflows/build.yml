@@ -1,6 +1,6 @@
-name: CI
+name: build
 
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   Build:
@@ -16,7 +16,7 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with:
           profile: minimal
-          toolchain: nightly-2023-04-20
+          toolchain: nightly-2023-12-04
           override: true
 
       - uses: docker-practice/actions-setup-docker@master
