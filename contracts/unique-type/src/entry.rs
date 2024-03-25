@@ -33,7 +33,7 @@ fn check_type_id() -> Result<(), Error> {
 
     let unique_args: Bytes = unique_type.args().unpack();
     if unique_args[..] != ret[0..UNIQUE_ARGS_SIZE] {
-        return Err(Error::InvalidUniqueArgsSize);
+        return Err(Error::UniqueTypeIdInvalid);
     }
     Ok(())
 }
