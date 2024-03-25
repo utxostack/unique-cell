@@ -3,11 +3,11 @@
 Build contracts:
 
 ``` sh
-capsule build
+make build
 ```
 
 Run tests:
 
 ``` sh
-capsule test
+make test
 ```
