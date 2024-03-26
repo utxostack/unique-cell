@@ -45,7 +45,7 @@ fn check_inputs() -> Result<(), Error> {
     let is_unique_input_exist = QueryIter::new(load_cell_type, Source::Input)
         .any(|type_opt| type_opt.map_or(false, |type_| type_.as_slice() == unique_type.as_slice()));
     if is_unique_input_exist {
-        return Err(Error::InputUniqueCellMismatch);
+        return Err(Error::InputUniqueCellForbidden);
     }
     Ok(())
 }

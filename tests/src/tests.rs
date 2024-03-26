@@ -12,13 +12,13 @@ const MAX_CYCLES: u64 = 10_000_000;
 
 // error numbers
 const UNIQUE_TYPE_ID_INVALID: i8 = 5;
-const INPUT_UNIQUE_CELL_MISMATCH: i8 = 6;
+const INPUT_UNIQUE_CELL_FORBIDDEN: i8 = 6;
 
 #[derive(PartialEq)]
 enum UniqueError {
     NoError,
     UniqueTypeIdInvalid,
-    InputUniqueCellMismatch,
+    InputUniqueCellForbidden,
 }
 
 fn create_test_context(unique_error: UniqueError) -> (Context, TransactionView) {
@@ -79,7 +79,7 @@ fn create_test_context(unique_error: UniqueError) -> (Context, TransactionView) 
     );
 
     let mut inputs = vec![empty_input.clone()];
-    if unique_error == UniqueError::InputUniqueCellMismatch {
+    if unique_error == UniqueError::InputUniqueCellForbidden {
         inputs.push(
             CellInput::new_builder()
                 .previous_output(unique_input_out_point)
@@ -132,8 +132,8 @@ fn test_unique_type_id_error() {
 
 #[test]
 fn test_input_unique_cell_mismatch_error() {
-    let (mut context, tx) = create_test_context(UniqueError::InputUniqueCellMismatch);
+    let (mut context, tx) = create_test_context(UniqueError::InputUniqueCellForbidden);
     let tx = context.complete_tx(tx);
     let err = context.verify_tx(&tx, MAX_CYCLES).unwrap_err();
-    assert_script_error(err, INPUT_UNIQUE_CELL_MISMATCH);
+    assert_script_error(err, INPUT_UNIQUE_CELL_FORBIDDEN);
 }
