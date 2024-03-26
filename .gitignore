@@ -9,3 +9,6 @@ contracts/c/build/*
 build/*
 !.gitkeep
 .tmp/
+
+
+**/node_modules
