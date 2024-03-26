@@ -9,6 +9,7 @@ pub enum Error {
     Encoding,
     UniqueTypeIdInvalid = 5,
     InputUniqueCellForbidden,
+    OnlyOneUniqueOutputCellAllowed,
 }
 
 impl From<SysError> for Error {

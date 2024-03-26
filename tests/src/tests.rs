@@ -13,12 +13,14 @@ const MAX_CYCLES: u64 = 10_000_000;
 // error numbers
 const UNIQUE_TYPE_ID_INVALID: i8 = 5;
 const INPUT_UNIQUE_CELL_FORBIDDEN: i8 = 6;
+const ONLY_ONE_UNIQUE_OUTPUT_CELL_ALLOWED: i8 = 7;
 
 #[derive(PartialEq)]
 enum UniqueError {
     NoError,
     UniqueTypeIdInvalid,
     InputUniqueCellForbidden,
+    OnlyOneUniqueOutputCellAllowed,
 }
 
 fn create_test_context(unique_error: UniqueError) -> (Context, TransactionView) {
@@ -58,7 +60,7 @@ fn create_test_context(unique_error: UniqueError) -> (Context, TransactionView) 
     let mut ret = [0; 32];
     blake2b.finalize(&mut ret);
     let unique_type_args = match unique_error {
-        UniqueError::UniqueTypeIdInvalid => Bytes::copy_from_slice(&ret[12..]),
+        UniqueError::UniqueTypeIdInvalid => Bytes::copy_from_slice(&[0xFF; 20]),
         _ => Bytes::copy_from_slice(&ret[0..20]),
     };
 
@@ -87,13 +89,22 @@ fn create_test_context(unique_error: UniqueError) -> (Context, TransactionView) 
         );
     }
 
-    let outputs = vec![CellOutput::new_builder()
+    let mut outputs = vec![CellOutput::new_builder()
         .capacity(500u64.pack())
-        .lock(lock_script)
-        .type_(Some(unique_type_script).pack())
+        .lock(lock_script.clone())
+        .type_(Some(unique_type_script.clone()).pack())
         .build()];
-
-    let outputs_data = vec![Bytes::default()];
+    let mut outputs_data = vec![Bytes::default()];
+    if unique_error == UniqueError::OnlyOneUniqueOutputCellAllowed {
+        outputs.push(
+            CellOutput::new_builder()
+                .capacity(500u64.pack())
+                .lock(lock_script)
+                .type_(Some(unique_type_script).pack())
+                .build(),
+        );
+        outputs_data.push(Bytes::default());
+    }
 
     let mut witnesses = vec![];
     for _ in 0..inputs.len() {
@@ -131,9 +142,17 @@ fn test_unique_type_id_error() {
 }
 
 #[test]
-fn test_input_unique_cell_mismatch_error() {
+fn test_input_unique_cell_forbidden_error() {
     let (mut context, tx) = create_test_context(UniqueError::InputUniqueCellForbidden);
     let tx = context.complete_tx(tx);
     let err = context.verify_tx(&tx, MAX_CYCLES).unwrap_err();
     assert_script_error(err, INPUT_UNIQUE_CELL_FORBIDDEN);
+}
+
+#[test]
+fn test_output_unique_cell_count_error() {
+    let (mut context, tx) = create_test_context(UniqueError::OnlyOneUniqueOutputCellAllowed);
+    let tx = context.complete_tx(tx);
+    let err = context.verify_tx(&tx, MAX_CYCLES).unwrap_err();
+    assert_script_error(err, ONLY_ONE_UNIQUE_OUTPUT_CELL_ALLOWED);
 }
