@@ -8,7 +8,8 @@ pub enum Error {
     LengthNotEnough,
     Encoding,
     UniqueTypeIdInvalid = 5,
-    InputUniqueCellMismatch,
+    InputUniqueCellForbidden,
+    OnlyOneUniqueOutputCellAllowed,
 }
 
 impl From<SysError> for Error {
