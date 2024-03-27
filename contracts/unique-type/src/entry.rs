@@ -30,7 +30,12 @@ fn check_type_id() -> Result<(), Error> {
         return Err(Error::OnlyOneUniqueOutputCellAllowed);
     }
 
-    let first_output_index = 0;
+    let first_output_index = QueryIter::new(load_cell_type, Source::Output)
+        .position(|type_opt| {
+            type_opt.map_or(false, |type_| type_.as_slice() == unique_type.as_slice())
+        })
+        .ok_or(Error::Encoding)?;
+
     let first_input = load_input(0, Source::Input)?;
 
     let mut blake2b = Blake2bBuilder::new(32)
