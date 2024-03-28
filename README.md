@@ -1,8 +1,8 @@
 # Unique Cell
 
-A unique cell can be created on the Nervos CKB through [TypeID](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0022-transaction-structure/0022-transaction-structure.md#type-id) which makes sure the the unique cell cannot be updated or destroyed. 
+A unique cell can be created on the Nervos CKB through [TypeID](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0022-transaction-structure/0022-transaction-structure.md#type-id) which makes sure the unique cell cannot be updated or destroyed. 
 
-The cell data can store any data, such as [XUDT](https://talk.nervos.org/t/rfc-extensible-udt/5337) token information and the contract will not check the content and format of the cell data.
+The unique cell data can store any data, such as [XUDT](https://talk.nervos.org/t/rfc-extensible-udt/5337) token information and the contract will not check the content and format of the cell data.
 
 ## XUDT Information
 
