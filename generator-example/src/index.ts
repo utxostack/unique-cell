@@ -5,12 +5,12 @@ import { CKB_UNIT, Collector, MAX_FEE, MIN_CAPACITY, NoLiveCellError, SECP256K1_
 const CKB_TEST_PRIVATE_KEY = "0x10928557a41a50ca3bcae9babc1bee2d097fa2acdfa39070c9d56433e6b2589e";
 
 const QUEUE_TYPE_CELL_DEP = {
-    outPoint: {
-      txHash: '0x2415ee81413fa9dd82245db054c19eb1ae2191185e2cb18ed1262947aec323c3',
-      index: '0x0',
-    },
-    depType: 'code',
-  } as CKBComponents.CellDep
+  outPoint: {
+    txHash: "0xff91b063c78ed06f10a1ed436122bd7d671f9a72ef5f5fa28d05252c17cf4cef",
+    index: "0x0",
+  },
+  depType: "code",
+} as CKBComponents.CellDep;
 
 const QUEUE_TYPE_SCRIPT = {
     codeHash: '0x8e341bcfec6393dcd41e635733ff2dca00a6af546949f70c57a706c0f344df8b',
