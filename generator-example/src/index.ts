@@ -2,9 +2,10 @@ import {serializeInput, blake2b, hexToBytes, AddressPrefix, getTransactionSize, 
 import { CKB_UNIT, Collector, MAX_FEE, MIN_CAPACITY, NoLiveCellError, SECP256K1_WITNESS_LOCK_SIZE, append0x, calculateTransactionFee, getSecp256k1CellDep, remove0x, u64ToLe } from "@rgbpp-sdk/ckb";
 
 // CKB SECP256K1 private key
-const CKB_TEST_PRIVATE_KEY = "0x10928557a41a50ca3bcae9babc1bee2d097fa2acdfa39070c9d56433e6b2589e";
+const CKB_TEST_PRIVATE_KEY = "0x0000000000000000000000000000000000000000000000000000000000000001";
 
-const QUEUE_TYPE_CELL_DEP = {
+// Unique type script Testnet deployment
+const TESTNET_QUEUE_TYPE_CELL_DEP = {
   outPoint: {
     txHash: "0xff91b063c78ed06f10a1ed436122bd7d671f9a72ef5f5fa28d05252c17cf4cef",
     index: "0x0",
@@ -12,11 +13,27 @@ const QUEUE_TYPE_CELL_DEP = {
   depType: "code",
 } as CKBComponents.CellDep;
 
-const QUEUE_TYPE_SCRIPT = {
-    codeHash: '0x8e341bcfec6393dcd41e635733ff2dca00a6af546949f70c57a706c0f344df8b',
-    hashType: 'type',
-    args: '',
-  } as CKBComponents.Script
+const TESTNET_QUEUE_TYPE_SCRIPT = {
+  codeHash: "0x8e341bcfec6393dcd41e635733ff2dca00a6af546949f70c57a706c0f344df8b",
+  hashType: "type",
+  args: "",
+} as CKBComponents.Script;
+
+// Unique type script Mainnet deployment
+const MAINNET_QUEUE_TYPE_CELL_DEP = {
+  outPoint: {
+    txHash: "0x9c344c947fc7c31221774c3cc03af3ef5a0e472497305f7da796216696bee4c8",
+    index: "0x0",
+  },
+  depType: "code",
+} as CKBComponents.CellDep;
+
+const MAINNET_QUEUE_TYPE_SCRIPT = {
+  codeHash: "0xcc2518c2c1384f2473c96f63c4e74074984296f358512ee7f54c848d4c135040",
+  hashType: "data1",
+  args: "",
+} as CKBComponents.Script;
+
 
 const generateQueueTypeArgs = (firstInput: CKBComponents.CellInput, firstOutputIndex: number) => {
   const input = hexToBytes(serializeInput(firstInput));
@@ -36,6 +53,9 @@ const createQueueCell = async () => {
   const isMainnet = false;
   // TODO: Replace the xudtInfo with your own info
   const xudtInfo = "0x081234";
+
+  const uniqueTypeScript = isMainnet ? MAINNET_QUEUE_TYPE_SCRIPT: TESTNET_QUEUE_TYPE_SCRIPT
+  const uniqueCellDep = isMainnet ? MAINNET_QUEUE_TYPE_CELL_DEP: TESTNET_QUEUE_TYPE_CELL_DEP
 
   const address = collector.getCkb().utils.privateKeyToAddress(CKB_TEST_PRIVATE_KEY, {prefix: AddressPrefix.Testnet});
   // ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq0e4xk4rmg5jdkn8aams492a7jlg73ue0gc0ddfj
@@ -58,7 +78,7 @@ const createQueueCell = async () => {
     {
       lock,
       type: {
-        ...QUEUE_TYPE_SCRIPT,
+        ...uniqueTypeScript,
         args: generateQueueTypeArgs(inputs[0], 0),
       },
       capacity: append0x(queueCellCapacity.toString(16)),
@@ -76,7 +96,7 @@ const createQueueCell = async () => {
   const emptyWitness = {lock: "", inputType: "", outputType: ""};
   const witnesses = inputs.map((_, index) => (index === 0 ? emptyWitness : "0x"));
 
-  const cellDeps = [getSecp256k1CellDep(isMainnet), QUEUE_TYPE_CELL_DEP];
+  const cellDeps = [getSecp256k1CellDep(isMainnet), uniqueCellDep];
 
   const unsignedTx = {
     version: "0x0",
