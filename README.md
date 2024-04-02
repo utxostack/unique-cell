@@ -4,6 +4,16 @@ A unique cell can be created on the Nervos CKB through [TypeID](https://github.c
 
 The unique cell data can store any data, such as [XUDT](https://talk.nervos.org/t/rfc-extensible-udt/5337) token information and the contract will not check the content and format of the cell data.
 
+## Unique Type Script
+
+```yaml
+unique type script:
+  code_hash: 
+    unique_type
+  args:
+    type_id[0..20]
+```
+
 ## XUDT Information
 
 The following is the info data format recommended by XUDT：
