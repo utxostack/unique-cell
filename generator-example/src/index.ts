@@ -5,7 +5,7 @@ import { CKB_UNIT, Collector, MAX_FEE, MIN_CAPACITY, NoLiveCellError, SECP256K1_
 const CKB_TEST_PRIVATE_KEY = "0x0000000000000000000000000000000000000000000000000000000000000001";
 
 // Unique type script Testnet deployment
-const TESTNET_QUEUE_TYPE_CELL_DEP = {
+const TESTNET_UNIQUE_TYPE_CELL_DEP = {
   outPoint: {
     txHash: "0xff91b063c78ed06f10a1ed436122bd7d671f9a72ef5f5fa28d05252c17cf4cef",
     index: "0x0",
@@ -13,14 +13,14 @@ const TESTNET_QUEUE_TYPE_CELL_DEP = {
   depType: "code",
 } as CKBComponents.CellDep;
 
-const TESTNET_QUEUE_TYPE_SCRIPT = {
+const TESTNET_UNIQUE_TYPE_SCRIPT = {
   codeHash: "0x8e341bcfec6393dcd41e635733ff2dca00a6af546949f70c57a706c0f344df8b",
   hashType: "type",
   args: "",
 } as CKBComponents.Script;
 
 // Unique type script Mainnet deployment
-const MAINNET_QUEUE_TYPE_CELL_DEP = {
+const MAINNET_UNIQUE_TYPE_CELL_DEP = {
   outPoint: {
     txHash: "0x9c344c947fc7c31221774c3cc03af3ef5a0e472497305f7da796216696bee4c8",
     index: "0x0",
@@ -28,14 +28,14 @@ const MAINNET_QUEUE_TYPE_CELL_DEP = {
   depType: "code",
 } as CKBComponents.CellDep;
 
-const MAINNET_QUEUE_TYPE_SCRIPT = {
+const MAINNET_UNIQUE_TYPE_SCRIPT = {
   codeHash: "0xcc2518c2c1384f2473c96f63c4e74074984296f358512ee7f54c848d4c135040",
   hashType: "data1",
   args: "",
 } as CKBComponents.Script;
 
 
-const generateQueueTypeArgs = (firstInput: CKBComponents.CellInput, firstOutputIndex: number) => {
+const generateUniqueTypeArgs = (firstInput: CKBComponents.CellInput, firstOutputIndex: number) => {
   const input = hexToBytes(serializeInput(firstInput));
   const s = blake2b(32, null, null, PERSONAL);
   s.update(input);
@@ -44,7 +44,7 @@ const generateQueueTypeArgs = (firstInput: CKBComponents.CellInput, firstOutputI
 };
 
 
-const createQueueCell = async () => {
+const createUniqueCell = async () => {
   const collector = new Collector({
     ckbNodeUrl: "https://testnet.ckb.dev/rpc",
     ckbIndexerUrl: "https://testnet.ckb.dev/indexer",
@@ -54,8 +54,8 @@ const createQueueCell = async () => {
   // TODO: Replace the xudtInfo with your own info
   const xudtInfo = "0x081234";
 
-  const uniqueTypeScript = isMainnet ? MAINNET_QUEUE_TYPE_SCRIPT: TESTNET_QUEUE_TYPE_SCRIPT
-  const uniqueCellDep = isMainnet ? MAINNET_QUEUE_TYPE_CELL_DEP: TESTNET_QUEUE_TYPE_CELL_DEP
+  const uniqueTypeScript = isMainnet ? MAINNET_UNIQUE_TYPE_SCRIPT : TESTNET_UNIQUE_TYPE_SCRIPT;
+  const uniqueCellDep = isMainnet ? MAINNET_UNIQUE_TYPE_CELL_DEP : TESTNET_UNIQUE_TYPE_CELL_DEP;
 
   const address = collector.getCkb().utils.privateKeyToAddress(CKB_TEST_PRIVATE_KEY, {prefix: AddressPrefix.Testnet});
   // ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq0e4xk4rmg5jdkn8aams492a7jlg73ue0gc0ddfj
@@ -69,23 +69,23 @@ const createQueueCell = async () => {
     throw new NoLiveCellError("The address has no empty cells");
   }
 
-  const queueCellCapacity = MIN_CAPACITY + BigInt(65) * CKB_UNIT + BigInt(remove0x(xudtInfo).length / 2) * CKB_UNIT;
+  const uniqueCellCapacity = MIN_CAPACITY + BigInt(65) * CKB_UNIT + BigInt(remove0x(xudtInfo).length / 2) * CKB_UNIT;
 
   let txFee = MAX_FEE;
-  const {inputs, sumInputsCapacity} = collector.collectInputs(emptyCells, queueCellCapacity, txFee, MIN_CAPACITY);
+  const {inputs, sumInputsCapacity} = collector.collectInputs(emptyCells, uniqueCellCapacity, txFee, MIN_CAPACITY);
 
   const outputs: CKBComponents.CellOutput[] = [
     {
       lock,
       type: {
         ...uniqueTypeScript,
-        args: generateQueueTypeArgs(inputs[0], 0),
+        args: generateUniqueTypeArgs(inputs[0], 0),
       },
-      capacity: append0x(queueCellCapacity.toString(16)),
+      capacity: append0x(uniqueCellCapacity.toString(16)),
     },
   ];
 
-  const changeCapacity = sumInputsCapacity - queueCellCapacity - txFee;
+  const changeCapacity = sumInputsCapacity - uniqueCellCapacity - txFee;
   outputs.push({
     lock,
     capacity: append0x(changeCapacity.toString(16)),
@@ -117,8 +117,8 @@ const createQueueCell = async () => {
 
   const signedTx = collector.getCkb().signTransaction(CKB_TEST_PRIVATE_KEY)(unsignedTx);
   const txHash = await collector.getCkb().rpc.sendTransaction(signedTx, "passthrough");
-  console.info(`A queue cell has been created with tx hash ${txHash}`);
+  console.info(`A unique cell has been created with tx hash ${txHash}`);
 };
 
-createQueueCell();
+createUniqueCell();
 
