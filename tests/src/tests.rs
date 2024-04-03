@@ -11,9 +11,9 @@ use ckb_testtool::{builtin::ALWAYS_SUCCESS, context::Context};
 const MAX_CYCLES: u64 = 10_000_000;
 
 // error numbers
-const UNIQUE_TYPE_ID_INVALID: i8 = 5;
-const INPUT_UNIQUE_CELL_FORBIDDEN: i8 = 6;
-const ONLY_ONE_UNIQUE_OUTPUT_CELL_ALLOWED: i8 = 7;
+const UNIQUE_TYPE_ID_INVALID: i8 = 6;
+const INPUT_UNIQUE_CELL_FORBIDDEN: i8 = 7;
+const ONLY_ONE_UNIQUE_OUTPUT_CELL_ALLOWED: i8 = 8;
 
 #[derive(PartialEq)]
 enum UniqueError {

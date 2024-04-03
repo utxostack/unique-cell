@@ -18,8 +18,7 @@ fn check_type_id() -> Result<(), Error> {
     let unique_type = load_script()?;
 
     // Only one queue cell is allowed in the outputs
-    let queue_cell_count = QueryIter::new(load_cell_type, Source::GroupOutput).count();
-    if queue_cell_count > 1 {
+    if QueryIter::new(load_cell_type, Source::GroupOutput).count() > 1 {
         return Err(Error::OnlyOneUniqueOutputCellAllowed);
     }
 
