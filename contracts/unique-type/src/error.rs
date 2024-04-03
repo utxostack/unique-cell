@@ -7,7 +7,7 @@ pub enum Error {
     ItemMissing,
     LengthNotEnough,
     Encoding,
-    UniqueTypeIdInvalid = 5,
+    UniqueTypeIdInvalid = 6,
     InputUniqueCellForbidden,
     OnlyOneUniqueOutputCellAllowed,
 }
