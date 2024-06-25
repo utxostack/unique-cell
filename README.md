@@ -11,7 +11,35 @@ unique type script:
   code_hash: 
     unique_type
   args:
-    type_id[0..20]
+    type_id[0..20]  // docs below describes how to generate this
+```
+
+### How to generate args
+https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0022-transaction-structure/0022-transaction-structure.md#type-id
+
+> There are two ways to create a new cell with a specific type id.
+
+> 1. Create a transaction which uses any out point as tx.inputs[0] and has a output cell whose type script is Type ID. The output cell's type script args is the hash of tx.inputs[0] and its output index. Because any out point can only be used once as an input, tx.inputs[0] and thus the new type id must be different in each creation transaction.
+> 2. Destroy an old cell with a specific type id and create a new cell with the same type id in the same transaction.
+
+Implemetation can be found in `generator-example/src/index.ts`
+```ts
+const generateUniqueTypeArgs = (firstInput: CKBComponents.CellInput, firstOutputIndex: number) => {
+  const input = hexToBytes(serializeInput(firstInput));
+  const s = blake2b(32, null, null, PERSONAL);
+  s.update(input);
+  s.update(hexToBytes(`0x${u64ToLe(BigInt(firstOutputIndex))}`));
+  return `0x${s.digest("hex").slice(0, 40)}`;
+};
+```
+`generator-example/src/lumos.ts`
+```ts
+function generateUniqueTypeArgs(input: Input, index: number) {
+  const hasher = new utils.CKBHasher();
+  hasher.update(blockchain.CellInput.pack(input));
+  hasher.update(Uint64.pack(index));
+  return hasher.digestHex().slice(0, 42);
+}
 ```
 
 ## XUDT Information
