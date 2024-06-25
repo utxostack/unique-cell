@@ -24,6 +24,16 @@ https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0022-transaction-structur
 
 Implemetation can be found in `generator-example/src/index.ts`
 ```ts
+const generateUniqueTypeArgs = (firstInput: CKBComponents.CellInput, firstOutputIndex: number) => {
+  const input = hexToBytes(serializeInput(firstInput));
+  const s = blake2b(32, null, null, PERSONAL);
+  s.update(input);
+  s.update(hexToBytes(`0x${u64ToLe(BigInt(firstOutputIndex))}`));
+  return `0x${s.digest("hex").slice(0, 40)}`;
+};
+```
+`generator-example/src/lumos.ts`
+```ts
 function generateUniqueCellArgs(input: Input, index: number) {
   const hasher = new utils.CKBHasher();
   hasher.update(blockchain.CellInput.pack(input));
