@@ -34,7 +34,7 @@ const generateUniqueTypeArgs = (firstInput: CKBComponents.CellInput, firstOutput
 ```
 `generator-example/src/lumos.ts`
 ```ts
-function generateUniqueCellArgs(input: Input, index: number) {
+function generateUniqueTypeArgs(input: Input, index: number) {
   const hasher = new utils.CKBHasher();
   hasher.update(blockchain.CellInput.pack(input));
   hasher.update(Uint64.pack(index));

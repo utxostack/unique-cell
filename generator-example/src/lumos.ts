@@ -38,7 +38,7 @@ const UNIQUE_CELL = {
   }
 }
 
-function generateUniqueCellArgs(input: Input, index: number) {
+function generateUniqueTypeArgs(input: Input, index: number) {
   const hasher = new utils.CKBHasher();
   hasher.update(blockchain.CellInput.pack(input));
   hasher.update(Uint64.pack(index));
@@ -66,7 +66,7 @@ async function main() {
   txSkeleton = helpers.addCellDep(txSkeleton, UNIQUE_CELL.TESTNET.CELL_DEP);
   txSkeleton = await commons.common.injectCapacity(txSkeleton, [tom.address], cell.cellOutput.capacity);
   // set actual args
-  cell.cellOutput.type!.args = generateUniqueCellArgs({
+  cell.cellOutput.type!.args = generateUniqueTypeArgs({
     previousOutput: txSkeleton.get('inputs').get(0)!.outPoint!,
     since: txSkeleton.get('inputSinces').get(0, '0x0'),
   }, txSkeleton.get('inputs').size);
