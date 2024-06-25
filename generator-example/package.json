@@ -7,10 +7,7 @@
     "queue": "npx ts-node src/index.ts"
   },
   "dependencies": {
-    "@nervosnetwork/ckb-sdk-core": "^0.109.1",
-    "@nervosnetwork/ckb-sdk-rpc": "^0.109.1",
-    "@nervosnetwork/ckb-sdk-utils": "^0.109.1",
-    "@rgbpp-sdk/ckb": "0.0.0-snap-20240324134200"
+    "@ckb-lumos/lumos": "^0.23.0"
   },
   "devDependencies": {
     "typescript": "^5.4.2",
