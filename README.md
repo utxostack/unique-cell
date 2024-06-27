@@ -71,7 +71,7 @@ symbol: variable max 255
 ```
 **Notice: The xUDT information format is NOT a key-value structure.**
 
-You can find code on how to construct the data in `generator-example/src/lumos.ts`
+You can find the code about how to construct the xUDT information data in `generator-example/src/lumos.ts`
 ```ts
 const coin = {
   decimal: 6,
