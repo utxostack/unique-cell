@@ -1,5 +1,5 @@
 import { hd, utils, config, helpers, commons, RPC, Indexer, HashType, DepType, Input } from '@ckb-lumos/lumos';
-import { bytes, blockchain, Uint64 } from '@ckb-lumos/lumos/codec';
+import { bytes, blockchain, Uint8, Uint64 } from '@ckb-lumos/lumos/codec';
 
 // For test only, you should NEVER expose your mnemonic or privateKey in production
 export const tom = {
@@ -56,11 +56,22 @@ async function main() {
     ...UNIQUE_CELL.TESTNET.TYPE_SCRIPT,
     args: bytes.hexify(new Uint8Array(20)),   // 20 bytes placeholder
   };
-  const cell = helpers.cellHelper.create({
-    lock,
-    type,
-    data: bytes.hexify(new TextEncoder().encode("Unique Cell is Awesome!"))  // Relace with XUDT Info
-  });
+
+  const coin = {
+    decimal: 6,
+    name: "UNIQUE COIN",
+    symbol: "UNC",
+  };
+
+  const data = bytes.hexify(bytes.concat(
+    Uint8.pack(coin.decimal),
+    Uint8.pack(coin.name.length),
+    new TextEncoder().encode(coin.name),
+    Uint8.pack(coin.symbol.length),
+    new TextEncoder().encode(coin.symbol),
+  ));
+
+  const cell = helpers.cellHelper.create({ lock, type, data });
 
   let txSkeleton = helpers.TransactionSkeleton({ cellProvider: indexer });
   txSkeleton = helpers.addCellDep(txSkeleton, UNIQUE_CELL.TESTNET.CELL_DEP);
