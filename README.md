@@ -88,6 +88,11 @@ const data = bytes.hexify(bytes.concat(
 ));
 ```
 
+## View Data as XUDT Info in CKB Explorer
+https://pudge.explorer.nervos.org/transaction/0x1fe9278e684b9b4b71450e3101f72801696a9985e127b870de98aaff01ce9026
+
+![TX](https://github.com/twhy/unique-cell/assets/7459812/5d357440-b21d-47d7-bbea-6b6f7bd09cee)
+![TokenInfo](https://github.com/twhy/unique-cell/assets/7459812/03487c94-c03b-4525-86d8-90b1e760fb29)
 
 ## Development
 
