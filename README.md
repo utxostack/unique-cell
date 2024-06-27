@@ -69,7 +69,7 @@ symbol: variable max 255
 ...
 
 ```
-**Notice: The format is NOT a key-value structure.**
+**Notice: The xUDT information format is NOT a key-value structure.**
 
 You can find code on how to construct the data in `generator-example/src/lumos.ts`
 ```ts
