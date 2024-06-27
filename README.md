@@ -69,6 +69,25 @@ symbol: variable max 255
 ...
 
 ```
+**Notice: The xUDT information format is NOT a key-value structure.**
+
+You can find the code about how to construct the xUDT information data in `generator-example/src/lumos.ts`
+```ts
+const coin = {
+  decimal: 6,
+  name: "UNIQUE COIN",
+  symbol: "UNC",
+};
+
+const data = bytes.hexify(bytes.concat(
+  Uint8.pack(coin.decimal),
+  Uint8.pack(coin.name.length),
+  new TextEncoder().encode(coin.name),
+  Uint8.pack(coin.symbol.length),
+  new TextEncoder().encode(coin.symbol),
+));
+```
+
 
 ## Development
 
