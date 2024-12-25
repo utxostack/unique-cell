@@ -6,9 +6,16 @@ jobs:
   Build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: Install Rust components
-        run: rustup component add rustfmt && rustup component add clippy
+      - name: Checkout code
+        uses: actions/checkout@v1
+      
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          components: rustfmt, clippy
+          override: true
+
       - name: Install cross
         run: cargo install cross --git https://github.com/cross-rs/cross --rev=6982b6c
            

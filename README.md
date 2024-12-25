@@ -54,13 +54,13 @@ The following is the info data format recommended by XUDT：
 decimal: uint8  
 
 # The length of the name in bytes
-len: uint8
+name_len: uint8
 
 # The name of the XUDT token - e.g. USDT, means to convert 'Tether USDT' to hex form '0x5465746865722055534454'
 name: variable max 255
 
 # The length of the symbol in bytes
-len: uint8
+symbol_len: uint8
 
 # The symbol of the XUDT token - e.g. USDT, means to convert 'USDT' to hex form '0x55534454'
 symbol: variable max 255
