@@ -1,5 +1,5 @@
 # Generator Example
 
 ``` sh
-pnpm install && pnpm queue
+pnpm install && pnpm generate
 ```
