@@ -21,10 +21,17 @@ export const hexToBytes = (hex: string) => {
 };
 
 export const bytesToHex = (bytes: Uint8Array): string =>
-  `0x${[...bytes].map((b) => b.toString(16).padStart(2, '0')).join('')}`;
+  `${[...bytes].map((b) => b.toString(16).padStart(2, '0')).join('')}`;
 
 const ArrayBufferToHex = (arrayBuffer: ArrayBuffer): string => {
   return Array.prototype.map.call(new Uint8Array(arrayBuffer), (x) => ('00' + x.toString(16)).slice(-2)).join('');
+};
+
+export const u8ToHex = (u8: number): string => {
+  const buffer = new ArrayBuffer(1);
+  const view = new DataView(buffer);
+  view.setUint8(0, u8);
+  return ArrayBufferToHex(buffer);
 };
 
 export const u32ToLe = (u32: string | number): string => {

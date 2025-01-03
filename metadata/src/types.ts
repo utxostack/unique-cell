@@ -8,3 +8,10 @@ export interface Metadata {
   // the type hash(32bytes) of the token info cell
   tokenInfoCellTypeHash: HexString;
 }
+
+export interface TokenInfo {
+  decimal: number;
+  name: string;
+  symbol: string;
+  totalSupply: bigint;
+}

@@ -5,6 +5,9 @@ const TAG_CALCULATING_SUPPLY = 2;
 const TAG_ISSUER = 3;
 const TAG_TOKEN_INFO_CELL_TYPE_HASH = 4;
 
+/**
+ * Encode metadata to hex string
+ */
 export const encodeMetadata = (metadata: Metadata): string => {
   const { issuer, circulatingSupply, tokenInfoCellTypeHash } = metadata;
   // issuer lock hash with 32 bytes
@@ -16,6 +19,9 @@ export const encodeMetadata = (metadata: Metadata): string => {
   return `0x${tagTokenInfoCellTypeHash}${tagIssuer}${tagCirculatingSupply}`;
 };
 
+/**
+ * Decode metadata from hex string
+ */
 export const decodeMetadata = (hex: string): Metadata => {
   const metadata: Metadata = {
     issuer: '',
