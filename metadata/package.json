@@ -1,0 +1,25 @@
+{
+  "name": "metadata",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest",
+    "lint": "tsc && eslint --ext .ts src/* && prettier --check 'src/*.ts'",
+    "lint:fix": "tsc && eslint --fix --ext .ts src/* && prettier --write 'src/*.ts'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/lodash": "^4.17.0",
+    "@typescript-eslint/eslint-plugin": "^7.8.0",
+    "@typescript-eslint/parser": "^7.8.0",
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.5",
+    "ts-node": "^10.9.2",
+    "tsup": "^8.3.5",
+    "typescript": "5.4.3",
+    "vitest": "^2.1.8"
+  }
+}
