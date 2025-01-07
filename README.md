@@ -4,7 +4,7 @@ A unique cell can be created on the Nervos CKB through [TypeID](https://github.c
 
 The unique cell data can store any format data, such as [Extensible UDT (xUDT)](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0052-extensible-udt/0052-extensible-udt.md) token information and the contract will not check the content and format of the cell data.
 
-When minting XUDT assets, a unique cell can be created at the same time to store XUDT information, but for the same XUDT, only the first unique cell that appears will be accepted.
+When minting xUDT assets, a unique cell can be created at the same time to store xUDT information, but for the same xUDT, **only the first unique cell** that appears will be accepted.
 
 ## Unique Type Script
 
