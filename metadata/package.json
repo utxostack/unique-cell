@@ -1,6 +1,6 @@
 {
   "name": "@utxostack/metadata",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Encode and decode token information and metadata for UDT assets on Nervos CKB",
   "scripts": {
     "test": "vitest",

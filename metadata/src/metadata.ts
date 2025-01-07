@@ -1,4 +1,4 @@
-import { leToU32, remove0x, u128ToLe, u32ToLe } from './hex';
+import { leToU128, leToU32, remove0x, u128ToLe, u32ToLe } from './hex';
 import { Metadata } from './types';
 
 const TAG_CALCULATING_SUPPLY = 2;
@@ -43,7 +43,7 @@ export const decodeMetadata = (hex: string): Metadata => {
         metadata.issuer = `0x${value}`;
         break;
       case TAG_CALCULATING_SUPPLY:
-        metadata.circulatingSupply = BigInt(`0x${value}`);
+        metadata.circulatingSupply = leToU128(`0x${value}`);
         break;
       case TAG_TOKEN_INFO_CELL_TYPE_HASH:
         metadata.tokenInfoCellTypeHash = `0x${value}`;
