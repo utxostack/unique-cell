@@ -2,7 +2,9 @@
 
 A unique cell can be created on the Nervos CKB through [TypeID](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0022-transaction-structure/0022-transaction-structure.md#type-id) which makes sure the unique cell cannot be updated or destroyed. 
 
-The unique cell data can store any format data, such as [XUDT](https://talk.nervos.org/t/rfc-extensible-udt/5337) token information and the contract will not check the content and format of the cell data.
+The unique cell data can store any format data, such as [Extensible UDT (xUDT)](https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0052-extensible-udt/0052-extensible-udt.md) token information and the contract will not check the content and format of the cell data.
+
+When minting xUDT assets, a unique cell can be created at the same time to store xUDT information, but for the same xUDT, **only the first unique cell** that appears will be accepted.
 
 ## Unique Type Script
 
@@ -11,7 +13,7 @@ unique type script:
   code_hash: 
     unique_type
   args:
-    type_id[0..20]  // The following will provide a detailed explanation on how to generate the type_id
+    type_id[0..20]
 ```
 
 ### How to generate unique type script args
@@ -22,29 +24,11 @@ https://github.com/nervosnetwork/rfcs/blob/master/rfcs/0022-transaction-structur
 > 1. Create a transaction which uses any out point as tx.inputs[0] and has a output cell whose type script is Type ID. The output cell's type script args is the hash of tx.inputs[0] and its output index. Because any out point can only be used once as an input, tx.inputs[0] and thus the new type id must be different in each creation transaction.
 > 2. Destroy an old cell with a specific type id and create a new cell with the same type id in the same transaction.
 
-Implementation can be found in `generator-example/src/index.ts`
-```ts
-const generateUniqueTypeArgs = (firstInput: CKBComponents.CellInput, firstOutputIndex: number) => {
-  const input = hexToBytes(serializeInput(firstInput));
-  const s = blake2b(32, null, null, PERSONAL);
-  s.update(input);
-  s.update(hexToBytes(`0x${u64ToLe(BigInt(firstOutputIndex))}`));
-  return `0x${s.digest("hex").slice(0, 40)}`;
-};
-```
-`generator-example/src/lumos.ts`
-```ts
-function generateUniqueTypeArgs(input: Input, index: number) {
-  const hasher = new utils.CKBHasher();
-  hasher.update(blockchain.CellInput.pack(input));
-  hasher.update(Uint64.pack(index));
-  return hasher.digestHex().slice(0, 42);
-}
-```
+Implementation can be found in `generator-example/src/index.ts` and `generator-example/src/lumos.ts`
 
-## XUDT Information
+## xUDT Information
 
-The following is the info data format recommended by XUDT：
+The following is the info data format recommended by xUDT：
 
 ```yaml
 # general
@@ -66,28 +50,31 @@ symbol_len: uint8
 symbol: variable max 255
 
 # optional
+# tag0 | data_len0 | data0 | tag1 | data_len1 | data1 | tag2 | data_len2 | data2
+total_supply: tag(4bytes) | data_length(4bytes) | data
 ...
 
 ```
 **Notice: The xUDT information format is NOT a key-value structure.**
 
-You can find the code about how to construct the xUDT information data in `generator-example/src/lumos.ts`
+You can find the code about how to construct the xUDT information data in `metadata/examples/index.ts`
 ```ts
-const coin = {
-  decimal: 6,
-  name: "UNIQUE COIN",
-  symbol: "UNC",
+import { TokenInfo, encodeTokenInfo, Metadata, encodeMetadata } from '@utxostack/metadata'
+const token: TokenInfo = {
+  decimal: 8,
+  name: 'Bitcoin',
+  symbol: 'BTC',
+  totalSupply: BigInt(2100_0000) * BigInt(10 ** 8),
+}
+const data = encodeTokenInfo(token)
+
+const metadata: Metadata = {
+  issuer: '0xa8efe3e8d534fbad88251c1f82cf2428f87637a27cfbf28b6365e9b74d895d18',
+  circulatingSupply: BigInt(1600_0000) * BigInt(10 ** 8),
+  tokenInfoCellTypeHash: '0x0f251aec82b7d329bfe94ac8456fd96c463248aec5551b18fd215ca5dcb94be7',
 };
-
-const data = bytes.hexify(bytes.concat(
-  Uint8.pack(coin.decimal),
-  Uint8.pack(coin.name.length),
-  new TextEncoder().encode(coin.name),
-  Uint8.pack(coin.symbol.length),
-  new TextEncoder().encode(coin.symbol),
-));
+const hexData = encodeMetadata(metadata)
 ```
-
 
 ## Development
 

@@ -1,0 +1,39 @@
+{
+  "name": "@utxostack/metadata",
+  "version": "0.0.2",
+  "description": "Encode and decode token information and metadata for UDT assets on Nervos CKB",
+  "scripts": {
+    "test": "vitest",
+    "build": "tsup",
+    "lint": "tsc && eslint --ext .ts src/* && prettier --check 'src/*.ts'",
+    "lint:fix": "tsc && eslint --fix --ext .ts src/* && prettier --write 'src/*.ts'"
+  },
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/lodash": "^4.17.0",
+    "@typescript-eslint/eslint-plugin": "^7.8.0",
+    "@typescript-eslint/parser": "^7.8.0",
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.5",
+    "ts-node": "^10.9.2",
+    "tsup": "^8.3.5",
+    "typescript": "5.4.3",
+    "vitest": "^2.1.8"
+  }
+}

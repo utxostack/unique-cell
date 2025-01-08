@@ -1,0 +1,26 @@
+name: Lint & Test
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3.5.0
+        with:
+          node-version: '20'
+      - uses: pnpm/action-setup@v3
+        name: Install -g pnpm
+        with:
+          version: 9
+          run_install: false
+      - name: Lint and Test
+        run: |
+          cd metadata
+          pnpm install
+          pnpm lint
+          pnpm test
+        
