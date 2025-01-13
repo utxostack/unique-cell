@@ -12,6 +12,14 @@ describe('encode and decode token info', () => {
     };
     const actual = encodeTokenInfo(token);
     expect(actual).toBe('0x0807426974636f696e0342544301000000100000000040075af07507000000000000000000');
+
+    const token2: TokenInfo = {
+      decimal: 8,
+      name: 'Bitcoin Fork',
+      symbol: 'BTCF',
+    };
+    const actualData = encodeTokenInfo(token2);
+    expect(actualData).toBe('0x080c426974636f696e20466f726b04425443460100000010000000');
   });
 
   it('decodeTokenInfo', () => {

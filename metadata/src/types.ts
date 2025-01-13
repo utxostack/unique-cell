@@ -13,5 +13,5 @@ export interface TokenInfo {
   decimal: number;
   name: string;
   symbol: string;
-  totalSupply: bigint;
+  totalSupply?: bigint;
 }

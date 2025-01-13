@@ -13,7 +13,7 @@ export const encodeTokenInfo = (tokenInfo: TokenInfo): string => {
   const symbolHex = utf8ToHex(symbol);
   const symbolLen = u8ToHex(symbolHex.length / 2);
   // total supply with u128
-  const tagTotalSupply = `${u32ToLe(TAG_TOTAL_SUPPLY)}${u32ToLe(16)}${u128ToLe(totalSupply)}`;
+  const tagTotalSupply = `${u32ToLe(TAG_TOTAL_SUPPLY)}${u32ToLe(16)}${totalSupply ? u128ToLe(totalSupply) : ''}`;
   return `0x${u8ToHex(decimal)}${nameLen}${nameHex}${symbolLen}${symbolHex}${tagTotalSupply}`;
 };
 
