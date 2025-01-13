@@ -27,7 +27,6 @@ export const decodeTokenInfo = (hex: string): TokenInfo => {
     decimal: 0,
     name: '',
     symbol: '',
-    totalSupply: undefined,
   };
   const raw = remove0x(hex);
   let index = 0;

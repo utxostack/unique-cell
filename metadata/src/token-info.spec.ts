@@ -32,8 +32,10 @@ describe('encode and decode token info', () => {
     expect(actual1.totalSupply).toBe('0x775f05a074000');
 
     const actual2 = decodeTokenInfo('0x080c426974636f696e20466f726b0442544346');
-    expect(actual2.decimal).toBe(8);
-    expect(actual2.name).toBe('Bitcoin Fork');
-    expect(actual2.symbol).toBe('BTCF');
+    expect(actual2).toStrictEqual({
+      decimal: 8,
+      name: 'Bitcoin Fork',
+      symbol: 'BTCF',
+    });
   });
 });
