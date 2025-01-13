@@ -23,7 +23,7 @@ describe('encode and decode metadata', () => {
     const { issuer, circulatingSupply, tokenInfoCellTypeHash } = actual;
     expect(issuer).toBe('0xa8efe3e8d534fbad88251c1f82cf2428f87637a27cfbf28b6365e9b74d895d18');
     // BigInt(1600_0000) * BigInt(10 ** 8)
-    expect(circulatingSupply).toBe("0x5af3107a40000");
+    expect(circulatingSupply).toBe('0x5af3107a40000');
     expect(tokenInfoCellTypeHash).toBe('0x0f251aec82b7d329bfe94ac8456fd96c463248aec5551b18fd215ca5dcb94be7');
   });
 });
