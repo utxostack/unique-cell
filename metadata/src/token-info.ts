@@ -40,7 +40,7 @@ export const decodeTokenInfo = (hex: string): TokenInfo => {
   tokenInfo.symbol = hexToUtf8(raw.slice(index, index + symbolLen * 2));
   index += symbolLen * 2;
 
-  if (raw.substring(index).length === 0) { 
+  if (raw.substring(index).length === 0) {
     return tokenInfo;
   }
   const tag = leToU32(raw.substring(index, index + 8));
