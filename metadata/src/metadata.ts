@@ -13,7 +13,7 @@ export const encodeMetadata = (metadata: Metadata): string => {
   // issuer lock hash with 32 bytes
   const tagIssuer = `${u32ToLe(TAG_ISSUER)}${u32ToLe(32)}${remove0x(issuer)}`;
   // circulating supply with u128
-  const tagCirculatingSupply = `${u32ToLe(TAG_CALCULATING_SUPPLY)}${u32ToLe(16)}${remove0x(u128ToLe(circulatingSupply))}`;
+  const tagCirculatingSupply = `${u32ToLe(TAG_CALCULATING_SUPPLY)}${u32ToLe(16)}${remove0x(u128ToLe(BigInt(circulatingSupply)))}`;
   // the type hash(32bytes) of the token info cell
   const tagTokenInfoCellTypeHash = `${u32ToLe(TAG_TOKEN_INFO_CELL_TYPE_HASH)}${u32ToLe(32)}${remove0x(tokenInfoCellTypeHash)}`;
   return `0x${tagTokenInfoCellTypeHash}${tagIssuer}${tagCirculatingSupply}`;
@@ -25,7 +25,7 @@ export const encodeMetadata = (metadata: Metadata): string => {
 export const decodeMetadata = (hex: string): Metadata => {
   const metadata: Metadata = {
     issuer: '',
-    circulatingSupply: BigInt(0),
+    circulatingSupply: '0x0',
     tokenInfoCellTypeHash: '',
   };
   const raw = remove0x(hex);
@@ -43,7 +43,7 @@ export const decodeMetadata = (hex: string): Metadata => {
         metadata.issuer = `0x${value}`;
         break;
       case TAG_CALCULATING_SUPPLY:
-        metadata.circulatingSupply = leToU128(`0x${value}`);
+        metadata.circulatingSupply = `0x${leToU128(`0x${value}`).toString(16)}`;
         break;
       case TAG_TOKEN_INFO_CELL_TYPE_HASH:
         metadata.tokenInfoCellTypeHash = `0x${value}`;

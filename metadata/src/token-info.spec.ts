@@ -8,7 +8,8 @@ describe('encode and decode token info', () => {
       decimal: 8,
       name: 'Bitcoin',
       symbol: 'BTC',
-      totalSupply: BigInt(2100_0000) * BigInt(10 ** 8),
+      // 0x775f05a074000
+      totalSupply: `0x${(BigInt(2100_0000) * BigInt(10 ** 8)).toString(16)}`,
     };
     const actual1 = encodeTokenInfo(token);
     expect(actual1).toBe('0x0807426974636f696e0342544301000000100000000040075af07507000000000000000000');
@@ -27,7 +28,8 @@ describe('encode and decode token info', () => {
     expect(actual1.decimal).toBe(8);
     expect(actual1.name).toBe('Bitcoin');
     expect(actual1.symbol).toBe('BTC');
-    expect(actual1.totalSupply).toBe(BigInt(2100_0000) * BigInt(10 ** 8));
+    // BigInt(2100_0000) * BigInt(10 ** 8)
+    expect(actual1.totalSupply).toBe('0x775f05a074000');
 
     const actual2 = decodeTokenInfo('0x080c426974636f696e20466f726b0442544346');
     expect(actual2.decimal).toBe(8);

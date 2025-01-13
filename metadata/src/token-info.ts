@@ -13,7 +13,9 @@ export const encodeTokenInfo = (tokenInfo: TokenInfo): string => {
   const symbolHex = utf8ToHex(symbol);
   const symbolLen = u8ToHex(symbolHex.length / 2);
   // total supply with u128
-  const tagTotalSupply = totalSupply ? `${u32ToLe(TAG_TOTAL_SUPPLY)}${u32ToLe(16)}${u128ToLe(totalSupply)}` : '';
+  const tagTotalSupply = totalSupply
+    ? `${u32ToLe(TAG_TOTAL_SUPPLY)}${u32ToLe(16)}${u128ToLe(BigInt(totalSupply))}`
+    : '';
   return `0x${u8ToHex(decimal)}${nameLen}${nameHex}${symbolLen}${symbolHex}${tagTotalSupply}`;
 };
 
@@ -49,7 +51,7 @@ export const decodeTokenInfo = (hex: string): TokenInfo => {
     const len = leToU32(raw.substring(index, index + 8)) * 2;
     index += 8;
     const totalSupply = `0x${raw.substring(index, index + len)}`;
-    tokenInfo.totalSupply = leToU128(totalSupply);
+    tokenInfo.totalSupply = `0x${leToU128(totalSupply).toString(16)}`;
   }
   return tokenInfo;
 };
