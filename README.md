@@ -58,22 +58,36 @@ total_supply: tag(4bytes) | data_length(4bytes) | data
 **Notice: The xUDT information format is NOT a key-value structure.**
 
 You can find the code about how to construct the xUDT information data in `metadata/examples/index.ts`
+
+The [`@utxostack/metadata`](https://www.npmjs.com/package/@utxostack/metadata) SDK should be installed first.
+
+```bash
+npm i @utxostack/metadata
+# or
+yarn add @utxostack/metadata
+# or
+pnpm add @utxostack/metadata
+
+```
+
 ```ts
 import { TokenInfo, encodeTokenInfo, Metadata, encodeMetadata } from '@utxostack/metadata'
 const token: TokenInfo = {
   decimal: 8,
   name: 'Bitcoin',
   symbol: 'BTC',
-  totalSupply: BigInt(2100_0000) * BigInt(10 ** 8),
+  totalSupply: `0x${(BigInt(2100_0000) * BigInt(10 ** 8)).toString(16)}`,
 }
 const data = encodeTokenInfo(token)
+console.log('encoded token info:', data)
 
 const metadata: Metadata = {
   issuer: '0xa8efe3e8d534fbad88251c1f82cf2428f87637a27cfbf28b6365e9b74d895d18',
-  circulatingSupply: BigInt(1600_0000) * BigInt(10 ** 8),
+  circulatingSupply: `0x${(BigInt(1600_0000) * BigInt(10 ** 8)).toString(16)}`,
   tokenInfoCellTypeHash: '0x0f251aec82b7d329bfe94ac8456fd96c463248aec5551b18fd215ca5dcb94be7',
 };
 const hexData = encodeMetadata(metadata)
+console.log('encoded metadata:', hexData)
 ```
 
 ## Development
